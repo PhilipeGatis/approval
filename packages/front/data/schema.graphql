@@ -1,0 +1,136 @@
+# Exposes a URL that specifies the behaviour of this scalar.
+directive @specifiedBy(
+  # The URL that specifies the behaviour of this scalar.
+  url: String!
+) on SCALAR
+type Approval {
+  id: ID!
+  strategy: ApprovalStrategyEnum!
+  from: String!
+  createdBy: String
+  createdAt: String!
+  dueDate: String!
+  status: ApprovalStatusEnum!
+  assets: [Asset!]
+  notes: [Note!]
+  approvers: [Approver!]
+  isCanApprove: Boolean!
+}
+
+input ApprovalInput {
+  from: String!
+  approvers: [ApproverInput!]!
+  assets: [AssetInput!]!
+}
+
+# All possible status
+enum ApprovalStatusEnum {
+  OPEN
+  EXPIRED
+  CLOSED
+}
+
+# All possible strategies
+enum ApprovalStrategyEnum {
+  ALL
+  ONE
+  PARTIAL
+}
+
+input ApproveInput {
+  approved: Boolean!
+  approvalId: String!
+}
+
+type Approver {
+  id: ID!
+  isApproved: Boolean!
+  isRequeried: Boolean!
+  login: String!
+  name: String!
+  createdAt: DateTime!
+  approval: Approval!
+}
+
+input ApproverInput {
+  login: String!
+  name: String!
+  isRequeried: Boolean = true
+}
+
+type Asset {
+  id: ID!
+  asset: String!
+  assetUrl: String!
+  approval: Approval!
+}
+
+input AssetInput {
+  asset: String!
+  assetUrl: String!
+}
+
+type Comment {
+  id: ID!
+  createdBy: String!
+  text: String!
+  note: Note!
+}
+
+input CommentInput {
+  text: String!
+  noteId: String!
+}
+
+# The javascript `Date` as string. Type represents date and time as the ISO Date string.
+scalar DateTime
+
+# The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+scalar JSONObject
+
+type Mutation {
+  approve(approved: ApproveInput!): Approver!
+  addNote(note: NoteInput!): Note!
+  addApproval(approval: ApprovalInput!): Approval!
+  addComment(comment: CommentInput!): Comment!
+}
+
+type Note {
+  id: ID!
+  createdBy: String!
+  text: String!
+  markup: JSONObject!
+  createdAt: DateTime!
+  approval: Approval!
+  comments: [Comment!]
+}
+
+input NoteInput {
+  markup: JSONObject!
+  text: String!
+  approvalId: String!
+}
+
+type Query {
+  approvers(approvalId: String!): [Approver!]!
+  approver(approverId: String!): Approver
+  note(noteId: String!): Note
+  notes(approvalId: String!): [Note!]!
+  approval(approvalId: String!): Approval
+  approvals: [Approval!]!
+  comment(commentId: String!): Comment
+  comments(noteId: String!): [Comment!]!
+}
+
+type Subscription {
+  updateInfoSubscription(approvalId: String!): UpdateInfo!
+}
+
+type UpdateInfo {
+  approval: Approval
+  approvers: [Approver!]
+  assets: [Asset!]
+  notes: [Note!]
+  comments: [Comment!]
+}
+

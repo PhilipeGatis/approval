@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.base",
+  "compilerOptions": {
+    "lib": [
+      "es2018",
+      "esnext.asynciterable"
+    ],
+    "baseUrl": "../",                    /* Base directory to resolve non-absolute module names. */
+    "paths": {
+      "@approval/server/*": [
+        "server/src/*"
+      ]
+    },
+    "outDir": "./dist",
+    "resolveJsonModule": true,
+    "target": "es2018"
+  },
+  "include": ["./src/**/*"]
+}

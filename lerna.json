@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "ci": false,
+  "command": {
+    "version": {
+      "message": "[VERSION] - %s"
+    }
+  }
+}

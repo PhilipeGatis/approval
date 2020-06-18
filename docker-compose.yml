@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+  mysql:
+    image: "mysql:5.7.10"
+    container_name: "typeorm-mg-mysql"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "admin"
+      MYSQL_USER: "test"
+      MYSQL_PASSWORD: "test"
+      MYSQL_DATABASE: "test"
+    expose:
+      - 3306
+    volumes:
+      - my-db:/data/db
+# Names our volume
+volumes:
+  my-db:
