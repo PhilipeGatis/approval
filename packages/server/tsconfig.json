@@ -1,11 +1,12 @@
 {
   "extends": "../../tsconfig.base",
   "compilerOptions": {
+    "sourceMap": true,
     "lib": [
       "es2018",
       "esnext.asynciterable"
     ],
-    "baseUrl": "../",                    /* Base directory to resolve non-absolute module names. */
+    "baseUrl": "../",
     "paths": {
       "@approval/server/*": [
         "server/src/*"

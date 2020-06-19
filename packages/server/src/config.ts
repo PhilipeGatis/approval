@@ -1,6 +1,5 @@
-import dotenv from 'dotenv'
+import dotenvSafe from 'dotenv-safe'
 import path from 'path'
-import fs from 'fs'
 
 // Types
 type LogConfig = {
@@ -10,7 +9,7 @@ type LogConfig = {
 export type DatabaseConfig = {
   type: 'mysql',
   host: string,
-  port: number,
+  port: number | string,
   username: string,
   password: string,
   database: string
@@ -23,29 +22,40 @@ type AppConfig = {
   database: DatabaseConfig;
 }
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'dev'
-const { NODE_ENV } = process.env
+const cwd = process.cwd();
 
-const envPath =
-    NODE_ENV === 'dev'
-      ? path.resolve(__dirname, '/../.env.dev')
-      : path.resolve(__dirname, '/../.env')
+const root = path.join.bind(cwd);
+const NODE_ENV = process.env.NODE_ENV;
 
-const envFileExists = fs.existsSync(envPath)
+if (NODE_ENV === 'dev') {
+  dotenvSafe.config({
+    path: root('.env.dev'),
+    sample: root('.env.sample')
+  });
+}
 
-if (envFileExists && ['dev', 'test'].includes(NODE_ENV)) {
-  const result = dotenv.config({
-    path: envPath
-  })
+if (NODE_ENV === 'test') {
+  dotenvSafe.config({
+    path: root('.env.test'),
+    sample: root('.env.sample')
+  });
+}
 
-  if (result.error) {
-    throw result.error
-  }
+if (NODE_ENV === 'prod') {
+  dotenvSafe.config({
+    path: root('.env'),
+    sample: root('.env.sample')
+  });
 }
 
 const {
   LOG_LEVEL = 'info',
-  PORT = 3001
+  PORT = 3001,
+  DB_HOST = '127.0.0.1',
+  DB_PORT = 3306,
+  DB_USER = 'test',
+  DB_PASS = 'test',
+  DB_DATABASE = 'test'
 } = process.env
 
 const appConfig: AppConfig = {
@@ -68,11 +78,11 @@ const appConfig: AppConfig = {
    */
   database: {
     type: 'mysql',
-    host: '127.0.0.1',
-    port: 3306,
-    username: 'test',
-    password: 'test',
-    database: 'test'
+    host: DB_HOST,
+    port: DB_PORT,
+    username: DB_USER,
+    password: DB_PASS,
+    database: DB_DATABASE
   }
 }
 
