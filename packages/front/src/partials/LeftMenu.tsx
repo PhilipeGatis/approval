@@ -21,29 +21,17 @@ const LeftMenu = () => {
   return (
     <DrawerTools anchor="left">
       <List>
-        <ListItem
-          selected={noteType === NoteType.LINE}
-          onClick={() => handleNoteType(NoteType.LINE)}
-          button
-        >
+        <ListItem selected={noteType === NoteType.LINE} onClick={() => handleNoteType(NoteType.LINE)} button>
           <ListItemIcon>
             <GestureIcon />
           </ListItemIcon>
         </ListItem>
-        <ListItem
-          selected={noteType === NoteType.CIRCLE}
-          onClick={() => handleNoteType(NoteType.CIRCLE)}
-          button
-        >
+        <ListItem selected={noteType === NoteType.CIRCLE} onClick={() => handleNoteType(NoteType.CIRCLE)} button>
           <ListItemIcon>
             <RadioButtonUncheckedIcon />
           </ListItemIcon>
         </ListItem>
-        <ListItem
-          selected={noteType === NoteType.SQUARE}
-          onClick={() => handleNoteType(NoteType.SQUARE)}
-          button
-        >
+        <ListItem selected={noteType === NoteType.SQUARE} onClick={() => handleNoteType(NoteType.SQUARE)} button>
           <ListItemIcon>
             <CheckBoxOutlineBlankIcon />
           </ListItemIcon>

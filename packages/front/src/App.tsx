@@ -3,12 +3,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
 import NotFound from './pages/NotFound';
 import theme from './theme';
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  Switch,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 import { RelayEnvironmentProvider } from 'relay-hooks';
 import modernEnvironment from './relay.env';
 

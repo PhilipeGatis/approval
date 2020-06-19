@@ -16,8 +16,7 @@ const [useStore] = create((set) => ({
 
   //Shotcuts
   isImageDrawing: false,
-  setImageDrag: (isImageDrawing: boolean) =>
-    set((state) => ({ isImageDrawing })),
+  setImageDrag: (isImageDrawing: boolean) => set((state) => ({ isImageDrawing })),
 }));
 
 export default useStore;

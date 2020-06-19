@@ -2,9 +2,7 @@ import { useMemo } from 'react';
 import graphql from 'babel-plugin-relay/macro';
 import { useSubscription } from 'relay-hooks';
 import { useUpdateInfoSubscribeInfoSubscription } from './__generated__/useUpdateInfoSubscribeInfoSubscription.graphql';
-import {
-  GraphQLSubscriptionConfig
-} from 'relay-runtime';
+import { GraphQLSubscriptionConfig } from 'relay-runtime';
 
 const subscription = graphql`
   subscription useUpdateInfoSubscribeInfoSubscription($approvalId: String!) {
@@ -49,9 +47,7 @@ const useUpdateInfoSubscribe = (props: Props): void => {
   const { approvalId } = props;
   useSubscription(
     useMemo(
-      (): GraphQLSubscriptionConfig<
-        useUpdateInfoSubscribeInfoSubscription
-      > => ({
+      (): GraphQLSubscriptionConfig<useUpdateInfoSubscribeInfoSubscription> => ({
         subscription: subscription,
         variables: {
           approvalId: approvalId,
@@ -60,8 +56,8 @@ const useUpdateInfoSubscribe = (props: Props): void => {
           console.log(response);
         },
       }),
-      [approvalId]
-    )
+      [approvalId],
+    ),
   );
 };
 

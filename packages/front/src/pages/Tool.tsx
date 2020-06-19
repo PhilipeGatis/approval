@@ -49,7 +49,7 @@ const Tool: FC<Props> = ({ match, history }) => {
     { approvalId },
     {
       fetchPolicy: 'store-or-network',
-    }
+    },
   );
 
   useUpdateInfoSubscribe({ approvalId });
@@ -65,9 +65,7 @@ const Tool: FC<Props> = ({ match, history }) => {
           <Header />
           <Content approvalId={approvalId} />
           <LeftMenu />
-          {props && props.approval && props.approval.isCanApprove && (
-            <RightMenu approvalId={approvalId} />
-          )}
+          {props && props.approval && props.approval.isCanApprove && <RightMenu approvalId={approvalId} />}
         </KeyBoardEvents>
       </Fragment>
     );

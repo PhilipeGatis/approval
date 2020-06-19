@@ -21,11 +21,7 @@ const ColorPicker = () => {
 
   return (
     <Fragment>
-      <ListItem
-        ref={anchorRef}
-        onClick={() => toogleColorPicker(!showColorPicker)}
-        button
-      >
+      <ListItem ref={anchorRef} onClick={() => toogleColorPicker(!showColorPicker)} button>
         <ListItemIcon>
           <BorderColorIcon />
         </ListItemIcon>

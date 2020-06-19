@@ -31,12 +31,7 @@ const RightMenu: React.FC<Props> = ({ children, anchor }) => {
   const classes = useStyles();
 
   return (
-    <Drawer
-      classes={{ paper: classes.paper }}
-      anchor={anchor}
-      variant="permanent"
-      open
-    >
+    <Drawer classes={{ paper: classes.paper }} anchor={anchor} variant="permanent" open>
       <div
         className={clsx(classes.list, {
           [classes.listRigth]: anchor === 'right',
