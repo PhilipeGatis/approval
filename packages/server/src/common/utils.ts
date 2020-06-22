@@ -1,5 +1,5 @@
-import { ColumnOptions, Column } from 'typeorm'
+import { ColumnOptions, Column } from 'typeorm';
 
-export function RelationColumn (options?: ColumnOptions) {
-  return Column({ nullable: true, ...options })
+export function RelationColumn(options?: ColumnOptions) {
+  return Column({ nullable: true, ...options });
 }

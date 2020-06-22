@@ -1,18 +1,16 @@
-import winston from 'winston'
-import config from '@approval/server/config'
+import winston from 'winston';
+import config from '@approval/server/config';
 
 // TODO: configure properly logger
-const transports: winston.transports.ConsoleTransportInstance[] = []
+const transports: winston.transports.ConsoleTransportInstance[] = [];
 
-const customFormat = winston.format.printf(
-  ({ level, message, label, timestamp }) => {
-    // return `${timestamp} [${label}] ${level}: ${message}`;
-    return `${timestamp} ${level}: ${message}`
-  }
-)
+const customFormat = winston.format.printf(({ level, message, label, timestamp }) => {
+  // return `${timestamp} [${label}] ${level}: ${message}`;
+  return `${timestamp} ${level}: ${message}`;
+});
 
 if (config.env !== 'dev') {
-  transports.push(new winston.transports.Console())
+  transports.push(new winston.transports.Console());
 } else {
   transports.push(
     new winston.transports.Console({
@@ -21,10 +19,10 @@ if (config.env !== 'dev') {
       format: winston.format.combine(
         winston.format.colorize(),
         winston.format.timestamp({ format: 'MM/DD HH:mm:ss:SSS' }),
-        customFormat
-      )
-    })
-  )
+        customFormat,
+      ),
+    }),
+  );
 }
 
 const loggerInstance = winston.createLogger({
@@ -32,13 +30,13 @@ const loggerInstance = winston.createLogger({
   levels: winston.config.npm.levels,
   format: winston.format.combine(
     winston.format.timestamp({
-      format: 'YYYY-MM-DD HH:mm:ss'
+      format: 'YYYY-MM-DD HH:mm:ss',
     }),
     winston.format.errors({ stack: true }),
     winston.format.splat(),
-    winston.format.json()
+    winston.format.json(),
   ),
-  transports
-})
+  transports,
+});
 
-export default loggerInstance
+export default loggerInstance;

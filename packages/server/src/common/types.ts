@@ -1,13 +1,13 @@
 export enum ApprovalStrategyEnum {
   ALL = 'all',
   ONE = 'one',
-  PARTIAL = 'partial'
+  PARTIAL = 'partial',
 }
 
 export enum ApprovalStatusEnum {
   OPEN = 'open',
   EXPIRED = 'expired',
-  CLOSED = 'closed'
+  CLOSED = 'closed',
 }
 
 export interface Context {
@@ -15,6 +15,6 @@ export interface Context {
 }
 
 export interface User {
-  name: string
-  login: string
+  name: string;
+  login: string;
 }

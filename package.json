@@ -16,21 +16,39 @@
     "prebuild": "lerna run prebuild --parallel"
   },
   "devDependencies": {
-    "@types/node": "^14.0.5",
+    "@types/cors": "^2.8.6",
     "@types/d3": "^5.7.2",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.6",
+    "@types/graphql": "^14.5.0",
+    "@types/graphql-type-json": "^0.3.2",
+    "@types/node": "^14.0.5",
     "@types/react": "^16.9.0",
     "@types/react-color": "^3.0.2",
     "@types/react-dom": "^16.9.8",
     "@types/react-relay": "^7.0.8",
     "@types/react-router-dom": "^5.1.5",
     "@types/relay-runtime": "^9.1.0",
-    "@types/cors": "^2.8.6",
-    "@types/dotenv": "^8.2.0",
-    "@types/express": "^4.17.6",
-    "@types/graphql": "^14.5.0",
-    "@types/graphql-type-json": "^0.3.2",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.2.5",
     "lerna": "^3.16.4",
+    "lint-staged": "^10.2.11",
+    "prettier": "^2.0.5",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^3.9.3"
+  },
+  "lint-staged": {
+    "*.yml": [
+      "yarn prettier --write"
+    ],
+    "*.{ts,tsx,js}": [
+      "yarn prettier --write",
+      "yarn lint"
+    ],
+    "package.json": [
+      "yarn prettier --write",
+      "yarn sort-package-json"
+    ]
   }
 }

@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "dist",
   "scripts": {
-    "start": "webpack --watch --progress --config webpack.config.js"
+    "start": "webpack --watch --progress --config webpack.config.js",
+    "lint:fix": "eslint --fix --ext .ts ./src"
   },
   "dependencies": {
     "apollo-server-express": "^2.15.0",
