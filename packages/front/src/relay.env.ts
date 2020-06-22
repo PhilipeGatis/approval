@@ -17,6 +17,7 @@ const fetchQuery: FetchFunction = async (operation, variables) => {
   return response.json();
 };
 
+// @ts-ignore
 const setupSubscription: SubscribeFunction = (request, variables) => {
   const query = request.text;
 
@@ -31,6 +32,7 @@ const setupSubscription: SubscribeFunction = (request, variables) => {
 
   const observable = subscriptionClient.request({ query: query!, variables });
 
+  // @ts-ignore
   return Observable.from(observable);
 };
 
