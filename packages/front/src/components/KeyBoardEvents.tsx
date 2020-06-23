@@ -1,9 +1,10 @@
 import React, { useCallback, FC } from 'react';
 import { HotKeys, KeyMap } from 'react-hotkeys';
-import useStore from '../store';
+import useLocal from '../relay/useLocal';
 
 const KeyBoardEvents: FC<{}> = ({ children }) => {
-  const setImageDrag = useStore((state) => state.setImageDrag);
+  const [isImageDrawing, toogleIsImageDrawing] = useLocal('shotcuts_isImageDrawing');
+
   const keymap: KeyMap = {
     COMMAND_DOWN: { sequence: 'command', action: 'keydown' },
     COMMAND_UP: { sequence: 'command', action: 'keyup' },
@@ -11,11 +12,11 @@ const KeyBoardEvents: FC<{}> = ({ children }) => {
 
   const handlers = {
     COMMAND_DOWN: useCallback(() => {
-      setImageDrag(true);
-    }, [setImageDrag]),
+      toogleIsImageDrawing(true);
+    }, [toogleIsImageDrawing]),
     COMMAND_UP: useCallback(() => {
-      setImageDrag(false);
-    }, [setImageDrag]),
+      toogleIsImageDrawing(false);
+    }, [toogleIsImageDrawing]),
   };
 
   return (

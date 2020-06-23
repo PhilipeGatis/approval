@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppTheme } from '../theme';
 import clsx from 'clsx';
-import Image from '../components/Image';
+import ImageStage from '../components/ImageStage/Stage';
 
 const useStyles = makeStyles((theme: AppTheme) => ({
   root: {
@@ -31,17 +31,13 @@ const useStyles = makeStyles((theme: AppTheme) => ({
   },
 }));
 
-interface Props {
-  approvalId: string;
-}
-
-const Content: React.FC<Props> = ({ approvalId }) => {
+const Content = () => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
       <div className={classes.toolbar} />
       <div className={clsx(classes.stage, classes.background)}>
-        <Image />
+        <ImageStage />
       </div>
     </div>
   );

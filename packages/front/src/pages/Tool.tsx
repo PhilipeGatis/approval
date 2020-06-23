@@ -5,6 +5,7 @@ import Content from '../partials/Content';
 import LeftMenu from '../partials/LeftMenu';
 import RightMenu from '../partials/RightMenu';
 import KeyBoardEvents from '../components/KeyBoardEvents';
+import Loading from '../components/Loading';
 import useUpdateInfoSubscribe from '../subscribers/useUpdateInfoSubscribe';
 import { useQuery } from 'relay-hooks';
 import graphql from 'babel-plugin-relay/macro';
@@ -57,20 +58,19 @@ const Tool: FC<Props> = ({ match, history }) => {
   useEffect(() => {
     if (props && !props.approval) history.push('/404');
   }, [props, history]);
-
   if (props && props.approval) {
     return (
       <Fragment>
         <KeyBoardEvents>
           <Header />
-          <Content approvalId={approvalId} />
+          <Content />
           <LeftMenu />
           {props && props.approval && props.approval.isCanApprove && <RightMenu approvalId={approvalId} />}
         </KeyBoardEvents>
       </Fragment>
     );
   }
-  return <div>loading</div>;
+  return <Loading />;
 };
 
 export default Tool;

@@ -1,0 +1,25 @@
+enum NoteType {
+    LINE
+    SQUARE
+    CIRCLE
+}
+
+type Settings {
+    # Tool
+    tool_selectedNoteType: NoteType!
+    tool_selectedColor: String!
+
+    # Shotcuts
+    shotcuts_isImageDrawing: Boolean!
+
+    #Stage
+    stage_scale: Float!
+    stage_stageWidth: Float!
+    stage_stageHeight: Float!
+    stage_imageHeight: Float!
+    stage_imageWidth: Float!
+}
+
+extend type Query {
+    settings: Settings
+}

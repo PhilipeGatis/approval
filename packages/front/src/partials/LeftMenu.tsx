@@ -8,30 +8,38 @@ import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import ColorPicker from '../components/ColorPicker';
 import DrawerTools from '../components/DrawerTools';
-import useStore, { NoteType } from '../store';
+import { NoteType } from '../Types';
+import useLocal from '../relay/useLocal';
 
 const LeftMenu = () => {
-  const noteType = useStore((state) => state.selectedNoteType);
-  const setNoteType = useStore((state) => state.setNoteType);
+  const [nodeType, setNodeType] = useLocal('tool_selectedNoteType');
 
   const handleNoteType = (type: NoteType) => {
-    setNoteType(type);
+    setNodeType(type);
   };
 
   return (
     <DrawerTools anchor="left">
       <List>
-        <ListItem selected={noteType === NoteType.LINE} onClick={() => handleNoteType(NoteType.LINE)} button>
+        <ListItem selected={nodeType === NoteType.LINE.toString()} onClick={() => handleNoteType(NoteType.LINE)} button>
           <ListItemIcon>
             <GestureIcon />
           </ListItemIcon>
         </ListItem>
-        <ListItem selected={noteType === NoteType.CIRCLE} onClick={() => handleNoteType(NoteType.CIRCLE)} button>
+        <ListItem
+          selected={nodeType === NoteType.CIRCLE.toString()}
+          onClick={() => handleNoteType(NoteType.CIRCLE)}
+          button
+        >
           <ListItemIcon>
             <RadioButtonUncheckedIcon />
           </ListItemIcon>
         </ListItem>
-        <ListItem selected={noteType === NoteType.SQUARE} onClick={() => handleNoteType(NoteType.SQUARE)} button>
+        <ListItem
+          selected={nodeType === NoteType.SQUARE.toString()}
+          onClick={() => handleNoteType(NoteType.SQUARE)}
+          button
+        >
           <ListItemIcon>
             <CheckBoxOutlineBlankIcon />
           </ListItemIcon>

@@ -8,11 +8,11 @@ import { Base } from '@approval/server/entities/base';
 @ObjectType()
 export class Approver extends Base {
   @Field(() => Boolean)
-  @Column()
+  @Column({ default: false })
   isApproved!: boolean;
 
   @Field(() => Boolean)
-  @Column()
+  @Column({ default: false })
   isRequeried!: boolean;
 
   @Field(() => String)

@@ -10,7 +10,8 @@
   "rules": {
     "prettier/prettier": "error",
     "react/prop-types": 0,
-    "@typescript-eslint/ban-ts-ignore": "off"
+    "@typescript-eslint/ban-ts-ignore": "off",
+    "@typescript-eslint/camelcase": 0
   },
   "settings": {
     "react": {

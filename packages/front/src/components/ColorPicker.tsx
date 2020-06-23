@@ -2,21 +2,19 @@ import React, { useRef, useState, Fragment } from 'react';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import Popover from '@material-ui/core/Popover';
-import { SketchPicker } from 'react-color';
+import { Color, SketchPicker } from 'react-color';
 import ListItem from '@material-ui/core/ListItem';
-import useStore from '../store';
+import useLocal from '../relay/useLocal';
 
 const ColorPicker = () => {
   const anchorRef = useRef(null);
-
-  const selectedColor = useStore((state) => state.selectedColor);
-  const setColor = useStore((state) => state.setColor);
+  const [color, updateColor] = useLocal('tool_selectedColor')
 
   const [showColorPicker, toogleColorPicker] = useState(false);
-  const [localColor, setLocalColor] = useState(selectedColor);
+  const [localColor, setLocalColor] = useState<Color>(color);
 
   const handleColorChange = () => {
-    setColor(localColor);
+    updateColor(localColor);
   };
 
   return (
@@ -42,7 +40,7 @@ const ColorPicker = () => {
         <SketchPicker
           color={localColor}
           onChangeComplete={() => handleColorChange}
-          onChange={(color) => setLocalColor(color)}
+          onChange={(color) => setLocalColor(color.hex)}
           disableAlpha
         />
       </Popover>
