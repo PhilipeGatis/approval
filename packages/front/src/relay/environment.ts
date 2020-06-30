@@ -1,5 +1,5 @@
 import { Environment, FetchFunction, Network, RecordSource, Store, commitLocalUpdate } from 'relay-runtime';
-import { NoteType } from '../Types';
+import { MarkupType } from '../Types';
 import { relayTransactionLogger } from './relayTransactionLogger';
 import { setupSubscription } from './setupSubscription';
 
@@ -37,14 +37,22 @@ commitLocalUpdate(env, (store) => {
   const dataID = `client:${__typename}`;
   const record = store.create(dataID, __typename);
 
-  record.setValue(NoteType.LINE, 'tool_selectedNoteType');
+  // Tool
+  record.setValue(MarkupType.LINE, 'tool_selectedNoteType');
   record.setValue('#ffffff', 'tool_selectedColor');
+
+  // Shortcuts
   record.setValue(false, 'shotcuts_isImageDrawing');
+
+  // Stage
   record.setValue(1, 'stage_scale');
   record.setValue(window.innerWidth, 'stage_stageWidth');
   record.setValue(window.innerHeight, 'stage_stageHeight');
   record.setValue(100, 'stage_imageWidth');
   record.setValue(100, 'stage_imageHeight');
+
+  // Dialogs
+  record.setValue(false, 'dialogs_addNote');
 
   store.getRoot().setLinkedRecord(record, fieldKey);
 });

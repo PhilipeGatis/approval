@@ -42,7 +42,7 @@ export class CommentResolver {
     await this.commentRepository.save(comment);
     const note = await this.noteRepository.findOne(comment.noteId);
     if (note)
-      await pubSub.publish('UPDATE_INFO', { approvalId: note.approvalId, id: comment.noteId, entityName: 'Comment' });
+      await pubSub.publish('UPDATE_INFO', { approvalId: note.approvalId, id: comment.id, entityName: 'Comment' });
     return comment;
   }
 

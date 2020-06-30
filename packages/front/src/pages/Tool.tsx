@@ -27,6 +27,7 @@ const query = graphql`
       }
       notes {
         id
+        markup
         createdBy
         comments {
           id
@@ -52,7 +53,6 @@ const Tool: FC<Props> = ({ match, history }) => {
       fetchPolicy: 'store-or-network',
     },
   );
-
   useUpdateInfoSubscribe({ approvalId });
 
   useEffect(() => {

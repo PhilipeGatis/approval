@@ -17,11 +17,12 @@ const query = graphql`
       stage_stageWidth
       tool_selectedColor
       tool_selectedNoteType
+      dialogs_addNote
     }
   }
 `;
 
-const useLocal = (field: string) => {
+const useLocal = (field: string, context?: 'action' | 'value') => {
   const { props } = useQuery<useLocalQuery>(
     query,
     {},
@@ -37,11 +38,20 @@ const useLocal = (field: string) => {
     () => (value: any) => {
       commitLocalUpdate(environment, (store) => {
         const record = store.getRoot().getLinkedRecord('settings');
+
         if (record) record.setValue(value, field);
       });
     },
     [field],
   );
+
+  if (context === 'action') {
+    return [updater];
+  }
+
+  if (context === 'value') {
+    return [value];
+  }
 
   return [value, updater];
 };

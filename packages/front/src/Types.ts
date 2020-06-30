@@ -1,25 +1,30 @@
-export enum NoteType {
+import Konva from 'konva';
+
+export enum MarkupType {
   LINE = 'line',
   SQUARE = 'square',
   CIRCLE = 'circle',
 }
 
-export type ToolProps = {
-  selectedNoteType: NoteType;
-  selectedColor: string;
+export type MarkupLine = {
+  points: Konva.Vector2d[];
 };
 
-export type ShotcutsProps = {
-  isImageDrawing: boolean;
-};
-
-export type StageProps = {
-  scale?: number;
-  stageWidth: number;
-  stageHeight: number;
-};
-
-export type Size = {
+export type MarkupSquare = {
+  x: number;
+  y: number;
   width: number;
   height: number;
+};
+
+export type MarkupCircle = {
+  x: number;
+  y: number;
+  radius: number;
+};
+
+export type Markup = {
+  color: string;
+  type: MarkupType;
+  content: MarkupCircle | MarkupSquare | MarkupLine | {};
 };

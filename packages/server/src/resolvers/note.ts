@@ -47,7 +47,7 @@ export class NoteResolver {
   ): Promise<Note> {
     const note = await this.noteRepository.create({ createdBy: user?.login, ...noteInput });
     const result = await this.noteRepository.save(note);
-    await pubSub.publish('UPDATE_INFO', { approvalId: note.approvalId, id: note.approvalId, entityName: 'Note' });
+    await pubSub.publish('UPDATE_INFO', { approvalId: note.approvalId, id: note.id, entityName: 'Note' });
     return result;
   }
 

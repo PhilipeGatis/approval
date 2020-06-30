@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Image } from 'react-konva';
 import useImage from 'use-image';
 
@@ -24,6 +24,10 @@ const ImageComponent: FC<Props> = ({
   setHeight,
 }) => {
   const [image] = useImage(url, 'Anonymous');
+  const [pos, setPos] = useState({
+    x: 0,
+    y: 0,
+  });
   useEffect(() => {
     if (!image) {
       return;
@@ -33,12 +37,13 @@ const ImageComponent: FC<Props> = ({
     setImageWidth(image.width);
     setImageHeight(image.height);
 
-    const ratio = image.width / image.height;
-    setWidth(width);
-    setHeight(width / ratio);
+    const x = width / 2 - (image.width * scale) / 2;
+    const y = height / 2 - (image.height * scale) / 2;
+
+    setPos({ x, y });
   }, [height, image, setHeight, setImageHeight, setImageWidth, setScale, setWidth, width]);
 
-  return <Image image={image} />;
+  return <Image image={image} x={pos.x} y={pos.y} />;
 };
 
 export default ImageComponent;

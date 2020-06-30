@@ -52,8 +52,31 @@ const useUpdateInfoSubscribe = (props: Props): void => {
         variables: {
           approvalId: approvalId,
         },
-        onNext: (response) => {
-          console.log(response);
+        updater: (store, data) => {
+          const approvalData = store.get(approvalId);
+
+          const notes = approvalData?.getLinkedRecords('notes');
+          const newNotes = data.updateInfoSubscription.notes?.map((item) => store.get(item.id));
+          // @ts-ignore
+          approvalData?.setLinkedRecords(notes?.concat(newNotes), 'notes');
+
+          const approvers = approvalData?.getLinkedRecords('approvers');
+          const newApprovers = data.updateInfoSubscription.approvers?.map((item) => store.get(item.id));
+          // @ts-ignore
+          approvalData?.setLinkedRecords(approvers?.concat(newApprovers), 'approvers');
+
+          const assets = approvalData?.getLinkedRecords('assets');
+          const newAssets = data.updateInfoSubscription.assets?.map((item) => store.get(item.id));
+          // @ts-ignore
+          approvalData?.setLinkedRecords(assets?.concat(newAssets), 'assets');
+
+          data.updateInfoSubscription.comments?.forEach((comment) => {
+            const noteData = store.get(comment.note.id);
+            const comments = noteData?.getLinkedRecords('comments');
+            const newComment = store.get(comment.id);
+            // @ts-ignore
+            noteData?.setLinkedRecords(comments?.concat([newComment]), 'comments');
+          });
         },
       }),
       [approvalId],

@@ -3,7 +3,7 @@ import { HotKeys, KeyMap } from 'react-hotkeys';
 import useLocal from '../relay/useLocal';
 
 const KeyBoardEvents: FC<{}> = ({ children }) => {
-  const [isImageDrawing, toogleIsImageDrawing] = useLocal('shotcuts_isImageDrawing');
+  const [toogleIsImageDrawing] = useLocal('shotcuts_isImageDrawing', 'action');
 
   const keymap: KeyMap = {
     COMMAND_DOWN: { sequence: 'command', action: 'keydown' },

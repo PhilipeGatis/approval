@@ -12,6 +12,9 @@ type Settings {
     # Shotcuts
     shotcuts_isImageDrawing: Boolean!
 
+    # dialogs
+    dialogs_addNote: Boolean!
+
     #Stage
     stage_scale: Float!
     stage_stageWidth: Float!

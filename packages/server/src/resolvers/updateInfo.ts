@@ -28,20 +28,20 @@ export class UpdateInfoResolver {
     const updateInfo = new UpdateInfo();
     switch (updateInfoPayload.entityName) {
       case 'Note':
-        updateInfo.notes = await this.entityManager.find(Note, { where: { approvalId: updateInfoPayload.id } });
+        updateInfo.notes = await this.entityManager.find(Note, { where: { id: updateInfoPayload.id } });
         break;
       case 'Comment':
-        updateInfo.comments = await this.entityManager.find(Comment, { where: { noteId: updateInfoPayload.id } });
+        updateInfo.comments = await this.entityManager.find(Comment, { where: { id: updateInfoPayload.id } });
         break;
       case 'Approver':
-        updateInfo.approvers = await this.entityManager.find(Approver, { where: { approvalId: updateInfoPayload.id } });
+        updateInfo.approvers = await this.entityManager.find(Approver, { where: { id: updateInfoPayload.id } });
         break;
       case 'Assets':
-        updateInfo.assets = await this.entityManager.find(Asset, { where: { approvalId: updateInfoPayload.id } });
+        updateInfo.assets = await this.entityManager.find(Asset, { where: { id: updateInfoPayload.id } });
         break;
       default:
         updateInfo.approval = await this.entityManager.findOne(Approval, {
-          where: { approvalId: updateInfoPayload.id },
+          where: { id: updateInfoPayload.id },
         });
     }
     return updateInfo;

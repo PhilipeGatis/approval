@@ -39,12 +39,13 @@ export class ApproverResolver {
     });
     if (approver) {
       await this.approverRepository.update(approver.id, { isApproved: approveInput.approved });
+
+      await pubSub.publish('UPDATE_INFO', {
+        approvalId: approveInput.approvalId,
+        id: approver.id,
+        entityName: 'Approver',
+      });
     }
-    await pubSub.publish('UPDATE_INFO', {
-      approvalId: approveInput.approvalId,
-      id: approveInput.approvalId,
-      entityName: 'Approver',
-    });
     return await this.approverRepository.findOne({ approvalId: approveInput.approvalId });
   }
 

@@ -39,7 +39,7 @@ const ColorPicker = () => {
       >
         <SketchPicker
           color={localColor}
-          onChangeComplete={() => handleColorChange}
+          onChangeComplete={handleColorChange}
           onChange={(color) => setLocalColor(color.hex)}
           disableAlpha
         />
