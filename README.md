@@ -1,4 +1,4 @@
-![](https://media.giphy.com/media/KZBcBClLAGnQynSIAc/giphy.gif)
+![](https://media.giphy.com/media/LlEqGzjyRPwMpnZ1kX/giphy.gif)
 
 # approval
 This is a asset approval collaboration tool where you can:
