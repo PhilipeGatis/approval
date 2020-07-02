@@ -121,11 +121,51 @@ interface OnMouseUpProps {
   event: Konva.KonvaEventObject<MouseEvent>;
   toggleDrawing: Function;
   toogleOpenAddNoteDialog: Function;
+  clearMarkup: Function;
   isImageDrawing: boolean;
+  markup: Markup;
+  isDrawing: boolean;
 }
 
-export const onMouseUp = ({ event, isImageDrawing, toggleDrawing, toogleOpenAddNoteDialog }: OnMouseUpProps) => {
-  if (isImageDrawing) return;
+export const onMouseUp = ({
+  event,
+  isDrawing,
+  isImageDrawing,
+  toggleDrawing,
+  toogleOpenAddNoteDialog,
+  markup,
+  clearMarkup,
+}: OnMouseUpProps) => {
+  if (!isDrawing || isImageDrawing) {
+    return;
+  }
+  if (markup.type === MarkupType.LINE) {
+    const contentLine = markup.content as MarkupLine;
+    if (contentLine.points.length < 3) {
+      toggleDrawing(false);
+      clearMarkup();
+      return;
+    }
+  }
+
+  if (markup.type === MarkupType.SQUARE) {
+    const contentSquare = markup.content as MarkupSquare;
+    if ((!contentSquare.width || contentSquare.width < 3) && (!contentSquare.height || contentSquare.height < 3)) {
+      toggleDrawing(false);
+      clearMarkup();
+      return;
+    }
+  }
+
+  if (markup.type === MarkupType.CIRCLE) {
+    const contentCircle = markup.content as MarkupCircle;
+    if (!contentCircle.radius || contentCircle.radius < 3) {
+      toggleDrawing(false);
+      clearMarkup();
+      return;
+    }
+  }
+
   toggleDrawing(false);
   toogleOpenAddNoteDialog(true);
 };

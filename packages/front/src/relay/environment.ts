@@ -1,7 +1,8 @@
 import { Environment, FetchFunction, Network, RecordSource, Store, commitLocalUpdate } from 'relay-runtime';
-import { MarkupType } from '../Types';
+import { InfoAreaType, MarkupType } from '../Types';
 import { relayTransactionLogger } from './relayTransactionLogger';
 import { setupSubscription } from './setupSubscription';
+import Konva from 'konva';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -39,10 +40,13 @@ commitLocalUpdate(env, (store) => {
 
   // Tool
   record.setValue(MarkupType.LINE, 'tool_selectedNoteType');
-  record.setValue('#ffffff', 'tool_selectedColor');
+  record.setValue(Konva.Util.getRandomColor(), 'tool_selectedColor');
 
   // Shortcuts
   record.setValue(false, 'shotcuts_isImageDrawing');
+
+  // info
+  record.setValue(InfoAreaType.NOTES, 'info_selected');
 
   // Stage
   record.setValue(1, 'stage_scale');

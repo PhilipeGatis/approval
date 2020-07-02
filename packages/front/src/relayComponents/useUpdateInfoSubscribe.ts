@@ -3,6 +3,7 @@ import graphql from 'babel-plugin-relay/macro';
 import { useSubscription } from 'relay-hooks';
 import { useUpdateInfoSubscribeInfoSubscription } from './__generated__/useUpdateInfoSubscribeInfoSubscription.graphql';
 import { GraphQLSubscriptionConfig } from 'relay-runtime';
+import { useParams } from 'react-router-dom';
 
 const subscription = graphql`
   subscription useUpdateInfoSubscribeInfoSubscription($approvalId: String!) {
@@ -39,12 +40,8 @@ const subscription = graphql`
   }
 `;
 
-interface Props {
-  approvalId: string;
-}
-
-const useUpdateInfoSubscribe = (props: Props): void => {
-  const { approvalId } = props;
+const useUpdateInfoSubscribe = (): void => {
+  const { id: approvalId } = useParams();
   useSubscription(
     useMemo(
       (): GraphQLSubscriptionConfig<useUpdateInfoSubscribeInfoSubscription> => ({
@@ -55,20 +52,35 @@ const useUpdateInfoSubscribe = (props: Props): void => {
         updater: (store, data) => {
           const approvalData = store.get(approvalId);
 
+          //Add new Notes
           const notes = approvalData?.getLinkedRecords('notes');
-          const newNotes = data.updateInfoSubscription.notes?.map((item) => store.get(item.id));
-          // @ts-ignore
-          approvalData?.setLinkedRecords(notes?.concat(newNotes), 'notes');
+          const newNotes = data.updateInfoSubscription.notes
+            ?.filter((item) => notes?.findIndex((note) => note.getDataID() === item.id) === -1)
+            .map((item) => store.get(item.id));
+          if (newNotes?.length) {
+            // @ts-ignore
+            approvalData?.setLinkedRecords(newNotes.concat(notes), 'notes');
+          }
 
+          //Add new Approvers
           const approvers = approvalData?.getLinkedRecords('approvers');
-          const newApprovers = data.updateInfoSubscription.approvers?.map((item) => store.get(item.id));
-          // @ts-ignore
-          approvalData?.setLinkedRecords(approvers?.concat(newApprovers), 'approvers');
+          const newApprovers = data.updateInfoSubscription.approvers
+            ?.filter((item) => approvers?.findIndex((approver) => approver.getDataID() === item.id) === -1)
+            .map((item) => store.get(item.id));
+          if (newApprovers?.length) {
+            // @ts-ignore
+            approvalData?.setLinkedRecords(approvers?.concat(newApprovers), 'approvers');
+          }
 
+          //Add new Asset
           const assets = approvalData?.getLinkedRecords('assets');
-          const newAssets = data.updateInfoSubscription.assets?.map((item) => store.get(item.id));
-          // @ts-ignore
-          approvalData?.setLinkedRecords(assets?.concat(newAssets), 'assets');
+          const newAssets = data.updateInfoSubscription.assets
+            ?.filter((item) => assets?.findIndex((asset) => asset.getDataID() === item.id) === -1)
+            .map((item) => store.get(item.id));
+          if (newAssets?.length) {
+            // @ts-ignore
+            approvalData?.setLinkedRecords(assets?.concat(newAssets), 'assets');
+          }
 
           data.updateInfoSubscription.comments?.forEach((comment) => {
             const noteData = store.get(comment.note.id);

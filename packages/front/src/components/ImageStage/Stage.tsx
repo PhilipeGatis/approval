@@ -1,42 +1,36 @@
 import React, { useState, useRef, useEffect, FC } from 'react';
 import { Layer, Stage } from 'react-konva';
-import { useQuery } from 'relay-hooks';
-import graphql from 'babel-plugin-relay/macro';
 import ImageComponent from './Image';
-import NoteSelector from './NoteSelector';
-import { useParams } from 'react-router-dom';
-import { StageComponentQuery } from './__generated__/StageComponentQuery.graphql';
-import useLocal from '../../relay/useLocal';
+import NoteSelector from './MarkupSelector';
+import useLocal from '../../relayComponents/useLocal';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppTheme } from '../../theme';
 import { onMouseDown, onMouseMove, onMouseUp } from './helperFunctions';
-import { Markup } from '../../Types';
+import { Markup, Approval } from '../../Types';
 import AddNote from '../AddNoteDialog';
+// @ts-ignore
+import useResizeAware from 'react-resize-aware';
 
 const useStyles = makeStyles((theme: AppTheme) => ({
   root: {
-    height: `calc( 100% - ${theme.mixins.toolbar.minHeight}px)`,
+    height: '100%',
   },
 }));
 
-const query = graphql`
-  query StageComponentQuery($approvalId: String!) {
-    approval(approvalId: $approvalId) {
-      notes {
-        id
-        markup
-      }
-      assets {
-        asset
-        assetUrl
-      }
-    }
-  }
-`;
+interface PosProps {
+  x: number;
+  y: number;
+}
 
-const StageComponent: FC<{}> = ({ children }) => {
+interface Props {
+  image?: HTMLImageElement;
+  pos: PosProps;
+  approval: Approval;
+}
+
+const StageComponent: FC<Props> = ({ image, pos, approval }) => {
   const stageRef = useRef<Stage>(null);
-  const stageWrapperRef = useRef<HTMLDivElement>(null);
+  const [resizeListener, sizes] = useResizeAware();
   const classes = useStyles();
 
   const [color] = useLocal('tool_selectedColor');
@@ -44,8 +38,6 @@ const StageComponent: FC<{}> = ({ children }) => {
   const [scale, setScale] = useLocal('stage_scale');
   const [width, setWidth] = useLocal('stage_stageWidth');
   const [height, setHeight] = useLocal('stage_stageHeight');
-  const [setImageWidth] = useLocal('stage_imageWidth', 'action');
-  const [setImageHeight] = useLocal('stage_imageHeight', 'action');
   const [isImageDrawing] = useLocal('shotcuts_isImageDrawing');
   const [toogleOpenAddNoteDialog] = useLocal('dialogs_addNote', 'action');
 
@@ -56,58 +48,38 @@ const StageComponent: FC<{}> = ({ children }) => {
     content: {},
   });
 
-  const { id } = useParams();
-
-  const { props } = useQuery<StageComponentQuery>(
-    query,
-    { approvalId: id },
-    {
-      fetchPolicy: 'store-only',
-    },
-  );
-  let url = '';
-
-  if (
-    props &&
-    props.approval &&
-    props.approval.assets &&
-    props.approval.assets.length &&
-    props.approval.assets[0].assetUrl
-  )
-    url = props.approval.assets[0].assetUrl;
-
   useEffect(() => {
-    const checkSize = () => {
-      if (stageWrapperRef.current) {
-        setWidth(stageWrapperRef.current.offsetWidth);
-        setHeight(stageWrapperRef.current.offsetHeight);
-      }
-    };
-    checkSize();
-    window.addEventListener('resize', checkSize);
-    return () => window.removeEventListener('resize', checkSize);
-  }, [setHeight, setWidth]);
+    if (sizes.height > 0 && sizes.width > 0) {
+      setHeight(sizes.height);
+      setWidth(sizes.width);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sizes]);
 
   useEffect(() => {
     setMarkup({ ...markup, color, type: noteType });
-  }, [color]);
-
-  useEffect(() => {
-    setMarkup({ content: {}, color, type: noteType });
-  }, [noteType]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [color, noteType]);
 
   const handelAddNoteCallback = () => {
+    clearMarkup();
+    toogleOpenAddNoteDialog(false);
+  };
+
+  const clearMarkup = () => {
     setMarkup({
       type: noteType,
       color: color,
       content: {},
     });
-    toogleOpenAddNoteDialog(false);
   };
 
   return (
-    <div className={classes.root} ref={stageWrapperRef}>
+    <div className={classes.root}>
+      {resizeListener}
       <Stage
+        x={pos?.x}
+        y={pos?.y}
         ref={stageRef}
         width={width}
         height={height}
@@ -136,32 +108,25 @@ const StageComponent: FC<{}> = ({ children }) => {
           onMouseUp({
             event: e,
             isImageDrawing,
+            isDrawing,
+            markup,
+            clearMarkup,
             toggleDrawing: toggleDrawing,
             toogleOpenAddNoteDialog: toogleOpenAddNoteDialog,
           })
         }
       >
         <Layer>
-          <ImageComponent
-            url={url}
-            height={height}
-            width={width}
-            setHeight={setHeight}
-            setWidth={setWidth}
-            setImageHeight={setImageHeight}
-            setImageWidth={setImageWidth}
-            setScale={setScale}
-          />
+          <ImageComponent image={image} height={height} width={width} setScale={setScale} />
         </Layer>
         <Layer>
           {markup && <NoteSelector markup={markup} />}
-          {props &&
-            props.approval &&
-            props.approval.notes &&
-            props.approval.notes.map((item) => <NoteSelector key={item.id} markup={item.markup as Markup} />)}
+          {approval.notes.map((item) => (
+            <NoteSelector key={item.id} markup={item.markup as Markup} />
+          ))}
         </Layer>
       </Stage>
-      <AddNote callback={handelAddNoteCallback} id={id} markup={markup} />
+      <AddNote callback={handelAddNoteCallback} markup={markup} />
     </div>
   );
 };

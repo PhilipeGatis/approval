@@ -1,73 +1,51 @@
-import React, { Fragment, FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import Header from '../partials/Header';
 import Content from '../partials/Content';
 import LeftMenu from '../partials/LeftMenu';
 import RightMenu from '../partials/RightMenu';
 import KeyBoardEvents from '../components/KeyBoardEvents';
 import Loading from '../components/Loading';
-import useUpdateInfoSubscribe from '../subscribers/useUpdateInfoSubscribe';
-import { useQuery } from 'relay-hooks';
-import graphql from 'babel-plugin-relay/macro';
-import { ToolQuery } from './__generated__/ToolQuery.graphql';
+import useUpdateInfoSubscribe from '../relayComponents/useUpdateInfoSubscribe';
+import useApprovalQuery from '../relayComponents/useApprovalQuery';
+import { AppTheme } from '../theme';
+import { makeStyles } from '@material-ui/core/styles';
 
-const query = graphql`
-  query ToolQuery($approvalId: String!) {
-    approval(approvalId: $approvalId) {
-      id
-      dueDate
-      isCanApprove
-      assets {
-        assetUrl
-        asset
-      }
-      approvers {
-        name
-        isApproved
-      }
-      notes {
-        id
-        markup
-        createdBy
-        comments {
-          id
-          text
-        }
-      }
-    }
-  }
-`;
+type Props = RouteComponentProps;
 
-interface TParams {
-  id: string;
-}
-
-type Props = RouteComponentProps<TParams>;
+const useStyles = makeStyles((theme: AppTheme) => ({
+  background: {
+    backgroundImage:
+      'linear-gradient(45deg,#e3e9ed 25%,transparent 0),linear-gradient(-45deg,#e3e9ed 25%,transparent 0),linear-gradient(45deg,transparent 75%,#e3e9ed 0),linear-gradient(-45deg,transparent 75%,#e3e9ed 0)',
+    backgroundSize: '20px 20px',
+    backgroundPosition: '0 0,0 10px,10px -10px,-10px 0',
+    height: '100%',
+    width: '100%',
+    position: 'fixed',
+  },
+  flex: {
+    display: 'flex',
+  },
+}));
 
 const Tool: FC<Props> = ({ match, history }) => {
-  const approvalId = match.params.id;
-  const { props } = useQuery<ToolQuery>(
-    query,
-    { approvalId },
-    {
-      fetchPolicy: 'store-or-network',
-    },
-  );
-  useUpdateInfoSubscribe({ approvalId });
+  const classes = useStyles();
+  const approval = useApprovalQuery();
 
-  useEffect(() => {
-    if (props && !props.approval) history.push('/404');
-  }, [props, history]);
-  if (props && props.approval) {
+  useUpdateInfoSubscribe();
+
+  if (approval) {
     return (
-      <Fragment>
+      <>
         <KeyBoardEvents>
-          <Header />
-          <Content />
-          <LeftMenu />
-          {props && props.approval && props.approval.isCanApprove && <RightMenu approvalId={approvalId} />}
+          <div className={classes.background}>
+            <LeftMenu />
+            <div className={classes.flex}>
+              <Content />
+              <RightMenu isCanApprove={approval && approval.isCanApprove} />
+            </div>
+          </div>
         </KeyBoardEvents>
-      </Fragment>
+      </>
     );
   }
   return <Loading />;

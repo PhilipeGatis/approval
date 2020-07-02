@@ -12,6 +12,9 @@ type Settings {
     # Shotcuts
     shotcuts_isImageDrawing: Boolean!
 
+    # info
+    info_selected: String!
+
     # dialogs
     dialogs_addNote: Boolean!
 

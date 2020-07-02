@@ -2,6 +2,7 @@ import { createMuiTheme, ThemeOptions, Theme } from '@material-ui/core/styles';
 
 interface AppOptions {
   drawerToolsWidth: number;
+  infoAreaWidth: number;
 }
 
 interface AppThemeOptions extends ThemeOptions {
@@ -14,7 +15,8 @@ export interface AppTheme extends Theme {
 
 const appTheme: AppThemeOptions = {
   app: {
-    drawerToolsWidth: 50,
+    drawerToolsWidth: 56,
+    infoAreaWidth: 356,
   },
 };
 

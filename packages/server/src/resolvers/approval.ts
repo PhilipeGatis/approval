@@ -90,6 +90,9 @@ export class ApprovalResolver {
     return this.entityManager.find(Note, {
       cache: 1000,
       where: { approvalId: approval.id },
+      order: {
+        createdAt: 'DESC',
+      },
     });
   }
 

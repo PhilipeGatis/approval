@@ -1,6 +1,6 @@
 import React, { useCallback, FC } from 'react';
 import { HotKeys, KeyMap } from 'react-hotkeys';
-import useLocal from '../relay/useLocal';
+import useLocal from '../relayComponents/useLocal';
 
 const KeyBoardEvents: FC<{}> = ({ children }) => {
   const [toogleIsImageDrawing] = useLocal('shotcuts_isImageDrawing', 'action');

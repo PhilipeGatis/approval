@@ -5,33 +5,23 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import graphql from 'babel-plugin-relay/macro';
-import { useMutation } from 'relay-hooks';
+import { useParams } from 'react-router-dom';
 
-import useLocal from '../relay/useLocal';
+import useLocal from '../relayComponents/useLocal';
+import useAddNoteMutation from '../relayComponents/useAddNoteMutation';
 import { Markup } from '../Types';
-import { AddNoteDialogMutation } from './__generated__/AddNoteDialogMutation.graphql';
-
-const mutation = graphql`
-  mutation AddNoteDialogMutation($approvalId: String!, $markup: JSONObject!, $text: String!) {
-    addNote(note: { approvalId: $approvalId, markup: $markup, text: $text }) {
-      id
-      markup
-    }
-  }
-`;
 
 interface Props {
   callback: Function;
   markup: Markup;
-  id: string;
 }
 
-const AddNoteDialog: FC<Props> = ({ id, callback, markup }) => {
+const AddNoteDialog: FC<Props> = ({ callback, markup }) => {
+  const { id } = useParams();
   const [open, toogleOpen] = useLocal('dialogs_addNote');
   const [text, setText] = useState<string>('');
 
-  const [mutate, { loading }] = useMutation<AddNoteDialogMutation>(mutation);
+  const { mutate, loading } = useAddNoteMutation();
 
   const handleClose = () => {
     callback();
@@ -62,10 +52,10 @@ const AddNoteDialog: FC<Props> = ({ id, callback, markup }) => {
           value={text}
           onChange={(e) => setText(e.target.value)}
           autoFocus
-          margin="dense"
           id="text"
-          label="Note"
           type="text"
+          multiline
+          rows={4}
           fullWidth
         />
       </DialogContent>

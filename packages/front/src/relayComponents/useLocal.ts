@@ -1,5 +1,5 @@
 import { commitLocalUpdate } from 'relay-runtime';
-import environment from './environment';
+import environment from '../relay/environment';
 import { useLocalQuery } from './__generated__/useLocalQuery.graphql';
 import graphql from 'babel-plugin-relay/macro';
 import { useQuery } from 'relay-hooks';
@@ -18,6 +18,7 @@ const query = graphql`
       tool_selectedColor
       tool_selectedNoteType
       dialogs_addNote
+      info_selected
     }
   }
 `;
