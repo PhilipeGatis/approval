@@ -32,8 +32,9 @@ This is a asset approval collaboration tool where you can:
  - yarn start:front
  
  ##### add frist data 
+ - go to ```http://localhost:3001/graphql```
  - add basic auth header ```"Authorization": "Basic dGVzdGU6dGVzdA="``` 
- - call mutation and copy id in result
+ - call mutation and copy id from result
  ```
   mutation addApproval {
    addApproval(approval: {
@@ -60,6 +61,6 @@ This is a asset approval collaboration tool where you can:
      }
    }
   ```
-  ![sample.png](![alt text](https://github.com/[username]/[reponame]/blob/[branch]/samples/sample.png?raw=true))
+  ![sample.png](../master/samples/sample.png?raw=true)
   ##### end
   - access ```http://localhost:3000/{id}```
