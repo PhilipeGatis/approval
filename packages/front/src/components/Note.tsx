@@ -13,11 +13,11 @@ import { red } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { AppTheme } from '../theme';
-import { Note } from '../Types';
 import { format, parseISO } from 'date-fns';
 import AvatarInitials from './AvatarInitals';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import useNoteFragment, { Note } from '../relayComponents/useNoteFragment';
 
 const useStyles = makeStyles((theme: AppTheme) =>
   createStyles({
@@ -48,6 +48,8 @@ const NoteComponent: React.FC<Props> = ({ note }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
 
+  const noteData = useNoteFragment({ note })
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -65,7 +67,7 @@ const NoteComponent: React.FC<Props> = ({ note }) => {
   return (
     <Card className={classes.root}>
       <CardHeader
-        avatar={<AvatarInitials className={classes.avatar} name={note.createdBy} />}
+        avatar={<AvatarInitials className={classes.avatar} name={noteData.createdBy} />}
         action={
           <>
             <IconButton aria-label="settings" onClick={handleClickMenu}>
@@ -77,16 +79,16 @@ const NoteComponent: React.FC<Props> = ({ note }) => {
             </Menu>
           </>
         }
-        title={`Note: ${note.id.slice(0, note.id.indexOf('-'))}`}
-        subheader={format(parseISO(note.createdAt as string), "'At:' dd/MM/yyyy HH:mm'h'")}
+        title={`Note: ${noteData.id.slice(0, noteData.id.indexOf('-'))}`}
+        subheader={format(parseISO(noteData.createdAt as string), "'At:' dd/MM/yyyy HH:mm'h'")}
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-          {note.text}
+          {noteData.text}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <Badge badgeContent={note.comments?.length || 0} color="primary">
+        <Badge badgeContent={noteData.comments?.length || 0} color="primary">
           <Typography gutterBottom variant="subtitle1">
             Comments
           </Typography>

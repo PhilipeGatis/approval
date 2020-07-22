@@ -1,16 +1,15 @@
 import React from 'react';
 import NoteComponent from './Note';
-import useApprovalQuery from '../relayComponents/useApprovalQuery';
-import { Note } from '../Types';
+import useNotesQuery from '../relayComponents/useNotesQuery';
 
 const NotesList = () => {
-  const approval = useApprovalQuery();
+  const notes = useNotesQuery();
 
-  if (approval?.notes?.length) {
+  if (notes?.length) {
     return (
       <>
-        {approval?.notes.map((note) => {
-          return <NoteComponent key={note.id} note={note as Note} />;
+        {notes.map((note) => {
+          return <NoteComponent key={note.id} note={note} />;
         })}
       </>
     );

@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import useLocal from '../../relayComponents/useLocal';
 import useApprovalQuery from '../../relayComponents/useApprovalQuery';
 import Stage from './Stage';
-import { Approval } from '../../Types';
 
 const ImageState = () => {
   const [setImageWidth] = useLocal('stage_imageWidth', 'action');
@@ -32,7 +31,7 @@ const ImageState = () => {
   }, [height, image, setImageHeight, setImageWidth, status, width]);
 
   if (status !== 'loaded') return null;
-  return <Stage image={image} pos={pos} approval={approval as Approval} />;
+  return <Stage image={image} pos={pos} />;
 };
 
 export default ImageState;

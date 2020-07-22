@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
+import { useSubscription } from 'react-relay/hooks';
 import graphql from 'babel-plugin-relay/macro';
-import { useSubscription } from 'relay-hooks';
 import { useUpdateInfoSubscribeInfoSubscription } from './__generated__/useUpdateInfoSubscribeInfoSubscription.graphql';
 import { GraphQLSubscriptionConfig } from 'relay-runtime';
 import { useParams } from 'react-router-dom';

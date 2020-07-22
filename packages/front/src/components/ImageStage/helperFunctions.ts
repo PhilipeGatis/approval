@@ -1,5 +1,5 @@
 import Konva from 'konva';
-import { Markup, MarkupLine, MarkupSquare, MarkupCircle, MarkupType } from '../../Types';
+import { Markup, MarkupLine, MarkupSquare, MarkupCircle, MarkupType } from './Types';
 
 export interface Attributes extends Konva.Vector2d {
   scale: number;

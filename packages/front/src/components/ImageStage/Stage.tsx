@@ -3,10 +3,11 @@ import { Layer, Stage } from 'react-konva';
 import ImageComponent from './Image';
 import NoteSelector from './MarkupSelector';
 import useLocal from '../../relayComponents/useLocal';
+import useNotesQuery from '../../relayComponents/useNotesQuery';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppTheme } from '../../theme';
 import { onMouseDown, onMouseMove, onMouseUp } from './helperFunctions';
-import { Markup, Approval } from '../../Types';
+import { Markup } from './Types';
 import AddNote from '../AddNoteDialog';
 // @ts-ignore
 import useResizeAware from 'react-resize-aware';
@@ -25,10 +26,9 @@ interface PosProps {
 interface Props {
   image?: HTMLImageElement;
   pos: PosProps;
-  approval: Approval;
 }
 
-const StageComponent: FC<Props> = ({ image, pos, approval }) => {
+const StageComponent: FC<Props> = ({ image, pos }) => {
   const stageRef = useRef<Stage>(null);
   const [resizeListener, sizes] = useResizeAware();
   const classes = useStyles();
@@ -40,6 +40,8 @@ const StageComponent: FC<Props> = ({ image, pos, approval }) => {
   const [height, setHeight] = useLocal('stage_stageHeight');
   const [isImageDrawing] = useLocal('shotcuts_isImageDrawing');
   const [toogleOpenAddNoteDialog] = useLocal('dialogs_addNote', 'action');
+
+  const notes = useNotesQuery();
 
   const [isDrawing, toggleDrawing] = useState<boolean>(false);
   const [markup, setMarkup] = useState<Markup>({
@@ -121,7 +123,7 @@ const StageComponent: FC<Props> = ({ image, pos, approval }) => {
         </Layer>
         <Layer>
           {markup && <NoteSelector markup={markup} />}
-          {approval.notes.map((item) => (
+          {notes.map((item) => (
             <NoteSelector key={item.id} markup={item.markup as Markup} />
           ))}
         </Layer>

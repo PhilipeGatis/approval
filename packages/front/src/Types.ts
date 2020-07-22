@@ -11,20 +11,6 @@ export enum MarkupType {
   CIRCLE = 'circle',
 }
 
-export type Comments = {
-  id: string;
-  text: string;
-};
-
-export type Note = {
-  id: string;
-  createdAt: unknown;
-  createdBy: string;
-  markup: unknown;
-  text: string;
-  comments?: Comments[];
-};
-
 export type Approver = {
   id: string;
   isRequeried: boolean;
@@ -44,28 +30,4 @@ export type Approval = {
   isCanApprove: boolean;
   assets: Asset[];
   approvers: Approver[];
-  notes: Note[];
-};
-
-export type MarkupLine = {
-  points: Konva.Vector2d[];
-};
-
-export type MarkupSquare = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-};
-
-export type MarkupCircle = {
-  x: number;
-  y: number;
-  radius: number;
-};
-
-export type Markup = {
-  color: string;
-  type: MarkupType;
-  content: MarkupCircle | MarkupSquare | MarkupLine | {};
 };

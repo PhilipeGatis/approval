@@ -2,7 +2,7 @@ import { commitLocalUpdate } from 'relay-runtime';
 import environment from '../relay/environment';
 import { useLocalQuery } from './__generated__/useLocalQuery.graphql';
 import graphql from 'babel-plugin-relay/macro';
-import { useQuery } from 'relay-hooks';
+import { useLazyLoadQuery } from 'react-relay/hooks';
 import { useMemo } from 'react';
 
 const query = graphql`
@@ -24,7 +24,7 @@ const query = graphql`
 `;
 
 const useLocal = (field: string, context?: 'action' | 'value') => {
-  const { props } = useQuery<useLocalQuery>(
+  const { settings } = useLazyLoadQuery<useLocalQuery>(
     query,
     {},
     {
@@ -33,7 +33,7 @@ const useLocal = (field: string, context?: 'action' | 'value') => {
   );
 
   // @ts-ignore
-  const value: any = props && props.settings && props.settings[field];
+  const value: any = settings && settings[field];
 
   const updater = useMemo(
     () => (value: any) => {

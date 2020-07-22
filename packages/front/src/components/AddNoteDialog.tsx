@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 
 import useLocal from '../relayComponents/useLocal';
 import useAddNoteMutation from '../relayComponents/useAddNoteMutation';
-import { Markup } from '../Types';
+import { Markup } from './ImageStage/Types';
 
 interface Props {
   callback: Function;
@@ -21,7 +21,7 @@ const AddNoteDialog: FC<Props> = ({ callback, markup }) => {
   const [open, toogleOpen] = useLocal('dialogs_addNote');
   const [text, setText] = useState<string>('');
 
-  const { mutate, loading } = useAddNoteMutation();
+  const { mutate, isPending } = useAddNoteMutation();
 
   const handleClose = () => {
     callback();
@@ -60,10 +60,10 @@ const AddNoteDialog: FC<Props> = ({ callback, markup }) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button disabled={loading} onClick={handleClose} color="primary">
+        <Button disabled={isPending} onClick={handleClose} color="primary">
           Cancel
         </Button>
-        <Button disabled={loading} onClick={handleSave} color="primary">
+        <Button disabled={isPending} onClick={handleSave} color="primary">
           Save
         </Button>
       </DialogActions>

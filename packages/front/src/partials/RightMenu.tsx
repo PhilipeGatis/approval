@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme: AppTheme) => ({
 }));
 
 interface Props {
-  isCanApprove: boolean;
+  isCanApprove: boolean | undefined;
 }
 
 const RightMenu: React.FC<Props> = ({ isCanApprove }) => {
@@ -85,7 +85,7 @@ const RightMenu: React.FC<Props> = ({ isCanApprove }) => {
   const queryString = parse(location.search, { ignoreQueryPrefix: true });
 
   const { id: approvalId } = useParams();
-  const { mutate, loading } = useApproveMutation();
+  const { mutate, isPending } = useApproveMutation();
   const [infoSelected, toggleInfo] = useLocal('info_selected');
 
   const infoOpenend = !!infoSelected;
@@ -132,12 +132,12 @@ const RightMenu: React.FC<Props> = ({ isCanApprove }) => {
             <List>
               {isCanApprove && (
                 <>
-                  <ListItem disabled={loading} onClick={() => handleApprove(true)} button>
+                  <ListItem disabled={isPending} onClick={() => handleApprove(true)} button>
                     <ListItemIcon className={clsx(classes.approve, classes.listIcon)}>
                       <CheckIcon />
                     </ListItemIcon>
                   </ListItem>
-                  <ListItem disabled={loading} onClick={() => handleApprove(false)} button>
+                  <ListItem disabled={isPending} onClick={() => handleApprove(false)} button>
                     <ListItemIcon className={clsx(classes.repprove, classes.listIcon)}>
                       <CloseIcon />
                     </ListItemIcon>
@@ -147,7 +147,7 @@ const RightMenu: React.FC<Props> = ({ isCanApprove }) => {
               )}
               <ListItem
                 selected={infoSelected === InfoAreaType.NOTES}
-                disabled={loading}
+                disabled={isPending}
                 onClick={() => handleDrawer(infoSelected === InfoAreaType.NOTES ? '' : InfoAreaType.NOTES)}
                 button
               >
@@ -157,7 +157,7 @@ const RightMenu: React.FC<Props> = ({ isCanApprove }) => {
               </ListItem>
               <ListItem
                 selected={infoSelected === InfoAreaType.APPROVERS}
-                disabled={loading}
+                disabled={isPending}
                 onClick={() => handleDrawer(infoSelected === InfoAreaType.APPROVERS ? '' : InfoAreaType.APPROVERS)}
                 button
               >

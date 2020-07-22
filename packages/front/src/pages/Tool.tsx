@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, Suspense } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import Content from '../partials/Content';
 import LeftMenu from '../partials/LeftMenu';
@@ -33,22 +33,19 @@ const Tool: FC<Props> = ({ match, history }) => {
 
   useUpdateInfoSubscribe();
 
-  if (approval) {
-    return (
-      <>
-        <KeyBoardEvents>
-          <div className={classes.background}>
-            <LeftMenu />
-            <div className={classes.flex}>
-              <Content />
-              <RightMenu isCanApprove={approval && approval.isCanApprove} />
-            </div>
+  return (
+    <Suspense fallback={<Loading />}>
+      <KeyBoardEvents>
+        <div className={classes.background}>
+          <LeftMenu />
+          <div className={classes.flex}>
+            <Content />
+            <RightMenu isCanApprove={approval?.isCanApprove} />
           </div>
-        </KeyBoardEvents>
-      </>
-    );
-  }
-  return <Loading />;
+        </div>
+      </KeyBoardEvents>
+    </Suspense>
+  );
 };
 
 export default Tool;

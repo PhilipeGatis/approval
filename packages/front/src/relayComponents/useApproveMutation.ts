@@ -1,5 +1,5 @@
+import { useMutation } from 'react-relay/hooks';
 import graphql from 'babel-plugin-relay/macro';
-import { useMutation } from 'relay-hooks';
 import { useApproveMutation } from './__generated__/useApproveMutation.graphql';
 
 const mutation = graphql`
@@ -12,7 +12,7 @@ const mutation = graphql`
 `;
 
 export default () => {
-  const [mutate, { loading }] = useMutation<useApproveMutation>(mutation);
+  const [mutate, isPending] = useMutation<useApproveMutation>(mutation);
 
-  return { mutate, loading };
+  return { mutate, isPending };
 };

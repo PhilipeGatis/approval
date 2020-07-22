@@ -1,4 +1,4 @@
-import { useQuery } from 'relay-hooks';
+import { useLazyLoadQuery } from 'react-relay/hooks';
 import graphql from 'babel-plugin-relay/macro';
 import { useParams, useHistory } from 'react-router-dom';
 import { useApprovalQuery } from './__generated__/useApprovalQuery.graphql';
@@ -21,25 +21,14 @@ const query = graphql`
         name
         isApproved
       }
-      notes {
-        id
-        markup
-        createdBy
-        createdAt
-        text
-        comments {
-          id
-          text
-        }
-      }
     }
   }
 `;
 
 export default () => {
-  const { id } = useParams()
-  const history = useHistory()
-  const { props } = useQuery<useApprovalQuery>(
+  const { id } = useParams();
+  const history = useHistory();
+  const { approval } = useLazyLoadQuery<useApprovalQuery>(
     query,
     { approvalId: id },
     {
@@ -48,8 +37,8 @@ export default () => {
   );
 
   useEffect(() => {
-    if (props && !props.approval) history.push('/404');
-  }, [props, history]);
+    if (!approval) history.push('/404');
+  }, [approval, history]);
 
-  return props?.approval;
+  return approval;
 };

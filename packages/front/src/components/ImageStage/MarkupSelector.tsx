@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Line, Circle, Rect } from 'react-konva';
-import { Markup, MarkupCircle, MarkupSquare, MarkupLine, MarkupType } from '../../Types';
+import { Markup, MarkupCircle, MarkupSquare, MarkupLine, MarkupType } from './Types';
 
 interface Props {
   markup: Markup;
