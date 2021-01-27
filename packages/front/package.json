@@ -10,7 +10,7 @@
     "initials": "^3.1.1",
     "konva": "^6.0.0",
     "qs": "^6.9.4",
-    "react": "^0.0.0-experimental-7f28234f8",
+    "react": "^16.13.1",
     "react-color": "^2.18.1",
     "react-dom": "^0.0.0-experimental-7f28234f8",
     "react-hotkeys": "^2.0.0",
